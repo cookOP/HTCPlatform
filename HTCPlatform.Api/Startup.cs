@@ -43,20 +43,44 @@ namespace HTCPlatform.Api
         public void ConfigureServices(IServiceCollection services)
         {
             //注入服务                  
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAdService, AdService>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IDapperRepository, DapperRepository>();
-            //集中注册服务
-            //foreach (var item in GetClassName("Service"))
-            //{
-            //    foreach (var typeArray in item.Value)
-            //    {
-            //        services.AddScoped(typeArray, item.Key);
-            //    }
-            //}
+            //services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<IUserService, UserService>();
+            //services.AddScoped<IAdService, AdService>();
+            //services.AddScoped<ICategoryService, CategoryService>();
+            //services.AddScoped<IProductService, ProductService>();
+            //services.AddScoped<IDapperRepository, DapperRepository>();
+
+            #region 反射注入服务
+            var allAssemblies = new List<Assembly>();
+            var path =  Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //string[] projectSuffixes = { "HTCPlatform.Service" };
+           foreach (var dll in Directory.GetFiles(path, "HTCPlatform.Service.dll"))
+               allAssemblies.Add(Assembly.LoadFile(dll));
+
+           var types = new List<Type>();
+            foreach (var assembly in allAssemblies)
+           {
+               foreach (var assemblyDefinedType in assembly.DefinedTypes)
+               {
+                    types.Add(assemblyDefinedType.AsType());
+               }
+           }
+
+           var implementTypes = types.Where(x => x.IsClass).ToList();
+           foreach (var implementType in implementTypes)
+           {
+               //接口和实现的命名规则为："AService"类实现了"IAService"接口,你也可以自定义规则
+               var interfaceType = implementType.GetInterface("I" + implementType.Name);
+
+               if (interfaceType != null)
+               {
+                   services.Add(new ServiceDescriptor(interfaceType, implementType,
+                       ServiceLifetime.Scoped));
+               }
+
+           }
+            #endregion 
+
             services.AddSingleton<IValidator<AddProductRequest>, AddProductRequestValidator>();
 
             services.AddMvc()
