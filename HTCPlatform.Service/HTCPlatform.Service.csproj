@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HTCPlatform.Common\HTCPlatform.Common.csproj" />
+    <ProjectReference Include="..\HTCPlatform.Dapper\HTCPlatform.Dapper.csproj" />
+    <ProjectReference Include="..\HTCPlatform.ServiceModel\HTCPlatform.ServiceModel.csproj" />
+  </ItemGroup>
+
+</Project>
