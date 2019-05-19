@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using HTCPlatform.Dapper.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,36 +6,36 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
-using HTCPlatform.Service.Product;
-using HTCPlatform.Service.Ad;
-using HTCPlatform.Service.Category;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Diagnostics;
 using System.Text;
-using Microsoft.IdentityModel.Logging;
 using FluentValidation.AspNetCore;
-using HTCPlatform.Service.User;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using HTCPlatform.Api.Filters;
 using System.Linq;
 using FluentValidation;
 using HTCPlatform.ServiceModel.Validators.Models.Product;
 using HTCPlatform.ServiceModel.Product;
 using System.Collections.Generic;
 using System.Reflection;
+using log4net.Repository;
+using log4net.Config;
+using log4net;
+using HTCPlatform.Api.Filters;
+using HTCPlatform.Dapper.Repositories;
 
 namespace HTCPlatform.Api
 {
     public class Startup
     {
+        public static ILoggerRepository repository { get; set; }
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration;           
+            repository = LogManager.CreateRepository("NETCoreRepository");
+            // 指定配置文件
+            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
         }
 
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -48,38 +47,18 @@ namespace HTCPlatform.Api
             //services.AddScoped<IAdService, AdService>();
             //services.AddScoped<ICategoryService, CategoryService>();
             //services.AddScoped<IProductService, ProductService>();
-            //services.AddScoped<IDapperRepository, DapperRepository>();
+            services.AddScoped<IDapperRepository, DapperRepository>();
 
-            #region 反射注入服务
-            var allAssemblies = new List<Assembly>();
-            var path =  Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            //string[] projectSuffixes = { "HTCPlatform.Service" };
-           foreach (var dll in Directory.GetFiles(path, "HTCPlatform.Service.dll"))
-               allAssemblies.Add(Assembly.LoadFile(dll));
-
-           var types = new List<Type>();
-            foreach (var assembly in allAssemblies)
-           {
-               foreach (var assemblyDefinedType in assembly.DefinedTypes)
-               {
-                    types.Add(assemblyDefinedType.AsType());
-               }
-           }
-
-           var implementTypes = types.Where(x => x.IsClass).ToList();
-           foreach (var implementType in implementTypes)
-           {
-               //接口和实现的命名规则为："AService"类实现了"IAService"接口,你也可以自定义规则
-               var interfaceType = implementType.GetInterface("I" + implementType.Name);
-
-               if (interfaceType != null)
-               {
-                   services.Add(new ServiceDescriptor(interfaceType, implementType,
-                       ServiceLifetime.Scoped));
-               }
-
-           }
-            #endregion 
+            // #region 反射注入服务
+            //集中注册服务
+            foreach (var item in GetClassName("HTCPlatform.Service"))
+            {
+                foreach (var typeArray in item.Value)
+                {
+                    services.AddScoped(typeArray, item.Key);
+                }
+            }
+            // #endregion 
 
             services.AddSingleton<IValidator<AddProductRequest>, AddProductRequestValidator>();
 
@@ -87,7 +66,15 @@ namespace HTCPlatform.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation();
             //返回json数据区分大小写
-            services.AddMvc().AddJsonOptions(options => { options.SerializerSettings.ContractResolver = new DefaultContractResolver(); });
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+               
+            });
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<HttpGlobalExceptionFilter>(); //加入全局异常类
+            });
             //注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(c =>
             {
@@ -117,6 +104,7 @@ namespace HTCPlatform.Api
 
                     return new BadRequestObjectResult(result);
                 };
+              
             });
 
             //配置授权
