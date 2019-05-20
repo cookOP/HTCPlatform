@@ -32,6 +32,7 @@
     <ProjectReference Include="..\HTCPlatform.Common\HTCPlatform.Common.csproj" />
     <ProjectReference Include="..\HTCPlatform.ServiceModel\HTCPlatform.ServiceModel.csproj" />
     <ProjectReference Include="..\HTCPlatform.Service\HTCPlatform.Service.csproj" />
+    <ProjectReference Include="..\HTCPlatform.ViewModel\HTCPlatform.ViewModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
