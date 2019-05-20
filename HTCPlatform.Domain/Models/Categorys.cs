@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HTCPlatform.Domain.Models
 {
-   public class Category
+   public class Categorys
     {
         public long Id { get; set; }
         public string Name { get; set; }

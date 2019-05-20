@@ -25,7 +25,7 @@ namespace HTCPlatform.Service.Category
             param.Add("@Name", req.Name);
             param.Add("@ParentId", req.ParentId);
             param.Add("@Describe", req.Describe);
-            var sql = @"INSERT INTO Category (Id,Name,ParentId,Describe)
+            var sql = @"INSERT INTO Categorys (Id,Name,ParentId,Describe)
                         VALUES(@Id,@Name,@ParentId,@Describe);";
             return await _dapperRepository.ExecuteAsync(sql, param);
         }
@@ -38,12 +38,12 @@ namespace HTCPlatform.Service.Category
 
         public async Task<CategoryResponse> GetCategoryAsync(long Id)
         {
-            return await _dapperRepository.QueryFirstOrDefaultAsync<CategoryResponse>("Id", Id, "Category");
+            return await _dapperRepository.QueryFirstOrDefaultAsync<CategoryResponse>("Id", Id, "Categorys");
         }
 
         public async Task<IList<CategoryResponse>> GetCategoryListAsync()
         {
-            return await _dapperRepository.QueryAsync<CategoryResponse>("Id,Name,ParentId,Describe", "Category", orderBy: "Id");
+            return await _dapperRepository.QueryAsync<CategoryResponse>("Id,Name,ParentId,Describe", "Categorys", orderBy: "Id");
         }
 
         public async Task<int> UpdateAsync(UpdateCategoryRequest req)
@@ -52,7 +52,7 @@ namespace HTCPlatform.Service.Category
             param.Add("@Id", req.Id);
             param.Add("@Name", req.Name);
             param.Add("@Describe", req.Describe);
-            var sql = @"UPDATE Category SET Name=@Name,Describe=@Describe WHERE Id=@Id";
+            var sql = @"UPDATE Categorys SET Name=@Name,Describe=@Describe WHERE Id=@Id";
             return await _dapperRepository.ExecuteAsync(sql, param);
         }
     }

@@ -17,17 +17,13 @@ namespace HTCPlatform.Api.Controllers
         private ILog log = LogManager.GetLogger(Startup.repository.Name, typeof(AdController));
         private readonly IAdService _adService;
         public AdController(IAdService adService)
-        {
-            log.Info("构造记录信息");
+        {            
             _adService = adService;
         }
         [HttpPost]
         [Route("GetAdList")]
         public async Task<ResultSuccess> GetAdListAsync(AdRequest req)
-        {
-            log.Info("构造记录信息");
-            log.Debug("构造记录信息");
-            log.Error("构造记录信息");
+        {           
             var result = new ResultSuccess();
             result.Data = await _adService.GetaAdListAsync(req);
             return result;
@@ -37,6 +33,7 @@ namespace HTCPlatform.Api.Controllers
         public async Task<ResultSuccess> AddAsync(AdAddRequest req)
         {
             req.Id = Snowflake.NewID();
+            req.CreateTime=DateTime.Now;
             var result = new ResultSuccess();
             result.Code=await _adService.AddAsync(req);
             return result;

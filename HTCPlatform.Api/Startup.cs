@@ -21,6 +21,7 @@ using log4net.Config;
 using log4net;
 using HTCPlatform.Api.Filters;
 using HTCPlatform.Dapper.Repositories;
+using AutoMapper;
 
 namespace HTCPlatform.Api
 {
@@ -75,6 +76,9 @@ namespace HTCPlatform.Api
             {
                 options.Filters.Add<HttpGlobalExceptionFilter>(); //加入全局异常类
             });
+            //AutoMapper 注入
+            services.AddAutoMapper();
+
             //注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(c =>
             {
@@ -128,6 +132,7 @@ namespace HTCPlatform.Api
                         ClockSkew = TimeSpan.FromMinutes(5)
                     };
                 });
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

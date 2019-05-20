@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HTCPlatform.Domain.Models
 {
-    public class Ad : BaseModel
+    public class Ads : BaseModel
     {
         public string Title { get; set; }
         public string Descride { get; set; }

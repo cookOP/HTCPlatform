@@ -16,5 +16,6 @@ namespace HTCPlatform.ServiceModel.Product
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set;}
         public  string Logo { get; set; }
+        public int Quantity { get; set; }
     }
 }
