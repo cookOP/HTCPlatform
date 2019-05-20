@@ -25,8 +25,8 @@ namespace HTCPlatform.Service.Category
             param.Add("@Name", req.Name);
             param.Add("@ParentId", req.ParentId);
             param.Add("@Describe", req.Describe);
-            var sql = @"INSERT Category INTO(Id,Name,ParentId,Describe)
-                        VALUE(@Id,@Name,@ParentId,@Describe)";
+            var sql = @"INSERT INTO Category (Id,Name,ParentId,Describe)
+                        VALUES(@Id,@Name,@ParentId,@Describe);";
             return await _dapperRepository.ExecuteAsync(sql, param);
         }
 
@@ -51,10 +51,11 @@ namespace HTCPlatform.Service.Category
             var param = new DynamicParameters();
             param.Add("@Id", req.Id);
             param.Add("@Name", req.Name);
-            param.Add("@ParentId", req.ParentId);
             param.Add("@Describe", req.Describe);
-            var sql = @"UPDATE Category SET Id=@Id,Name=@Name,ParentId=@ParentId,Describe=@Describe WHERE Id=@Id";
+            var sql = @"UPDATE Category SET Name=@Name,Describe=@Describe WHERE Id=@Id";
             return await _dapperRepository.ExecuteAsync(sql, param);
         }
     }
 }
+
+

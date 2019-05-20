@@ -22,7 +22,7 @@ namespace HTCPlatform.Dapper.Repositories
             get
             {
                 return new SqlConnection(
-                    @"Data Source=(localdb)\ProjectsV13;Initial Catalog=HTCPlatform;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                    @"Server=.;Database=HTCPlatform;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
         

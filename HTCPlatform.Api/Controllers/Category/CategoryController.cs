@@ -55,6 +55,7 @@ namespace HTCPlatform.Api.Controllers.Category
             req.Id = Snowflake.NewID();
             var result = new ResultSuccess();
             result.Code=await _categoryService.AddAsync(req);
+            result.Data = req.Id;
             return result;
         }
         [HttpPost]
