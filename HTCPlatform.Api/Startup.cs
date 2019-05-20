@@ -22,6 +22,8 @@ using log4net;
 using HTCPlatform.Api.Filters;
 using HTCPlatform.Dapper.Repositories;
 using AutoMapper;
+using HTCPlatform.ViewModel.Models.Product;
+using HTCPlatform.ViewModel.Validators.Product;
 
 namespace HTCPlatform.Api
 {
@@ -63,6 +65,15 @@ namespace HTCPlatform.Api
 
             services.AddSingleton<IValidator<AddProductRequest>, AddProductRequestValidator>();
 
+            // 添加验证器            
+            var types = Assembly.Load("HTCPlatform.ViewModel").GetTypes().Where(p => p.BaseType.GetInterfaces().Any(x => x == typeof(IValidator)));
+
+            foreach (var type in types)
+            {
+                var genericType = typeof(IValidator<>).MakeGenericType(type.BaseType.GenericTypeArguments[0]);
+                services.AddSingleton(genericType, type);
+            }
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation();
@@ -102,7 +113,7 @@ namespace HTCPlatform.Api
                     var result = new
                     {
                         Code = "00009",
-                        Message = "Validation errors",
+                        Message = "填写信息验证不通过！",
                         Errors = errors
                     };
 

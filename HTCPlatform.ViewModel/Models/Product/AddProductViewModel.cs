@@ -5,21 +5,22 @@ using System.Text;
 
 namespace HTCPlatform.ViewModel.Models.Product
 {
+    
     public class AddProductViewModel
     {
-        [Required]
+        //[Required]
         public string Name { get; set; }
-        [Required]
+        //[Required]
         public string Describe { get; set; }
-        [Required]
+        //[Required]
         public int Amount { get; set; }
-        [Required]
+        //[Required]
         public decimal Price { get; set; }
-        [Required]
+        //[Required]
         public long CategoryId { get; set; }
-        [Required]
+        //[Required]
         public string Logo { get; set; }
-        [Required]
+        //[Required]
         public int Quantity { get; set; }
         public bool IsEnabled { get; set; }
     }

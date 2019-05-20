@@ -10,7 +10,7 @@ using HTCPlatform.ServiceModel.Product;
 using Microsoft.AspNetCore.Mvc;
 using HTCPlatform.Common.Snowflake;
 using HTCPlatform.Domain.Models;
-using HTCPlatform.Api.ViewModel.Product;
+using HTCPlatform.ViewModel.Models.Product;
 
 namespace HTCPlatform.Api.Controllers.Product
 {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using AutoMapper;
-using HTCPlatform.Api.ViewModel.Product;
 using HTCPlatform.Domain.Models;
+using HTCPlatform.ViewModel.Models.Product;
 
 namespace HTCPlatform.Api.Mapper
 {

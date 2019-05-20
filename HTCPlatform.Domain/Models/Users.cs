@@ -8,6 +8,6 @@ namespace HTCPlatform.Domain.Models
     {
         public string Name { get; set; }
         public string Password { get; set; }
-        public bool IsEoable { get; set; }
+        public bool IsEnable { get; set; }
     }
 }
