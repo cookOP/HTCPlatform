@@ -12,8 +12,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
 using FluentValidation;
-using HTCPlatform.ServiceModel.Validators.Models.Product;
-using HTCPlatform.ServiceModel.Product;
 using System.Collections.Generic;
 using System.Reflection;
 using log4net.Repository;
@@ -22,8 +20,6 @@ using log4net;
 using HTCPlatform.Api.Filters;
 using HTCPlatform.Dapper.Repositories;
 using AutoMapper;
-using HTCPlatform.ViewModel.Models.Product;
-using HTCPlatform.ViewModel.Validators.Product;
 
 namespace HTCPlatform.Api
 {
@@ -63,7 +59,7 @@ namespace HTCPlatform.Api
             }
             // #endregion 
 
-            services.AddSingleton<IValidator<AddProductRequest>, AddProductRequestValidator>();
+            //services.AddSingleton<IValidator<AddProductRequest>, AddProductRequestValidator>();
 
             // 添加验证器            
             var types = Assembly.Load("HTCPlatform.ViewModel").GetTypes().Where(p => p.BaseType.GetInterfaces().Any(x => x == typeof(IValidator)));

@@ -33,7 +33,7 @@ namespace HTCPlatform.Service.Product
                 param.Add(new Parameter("a.UpdateTime", req.UpdateTime, OperateType.LessEqual));
             if ((req.IsEnbale.HasValue))
                 param.Add(new Parameter("a.IsEnabled", req.IsEnbale.Value));
-
+            await _dapperRepository.ExecuteAsync("select  top 10 * from where id=@id",new {id=new DbString{Value = "123456",IsAnsi = true}});
             return await _dapperRepository.GetPagedListQueryAsync<ProductResponse>("Products AS a INNER JOIN Categorys  AS b on a.CategoryId=b.Id ",
                 "a.Id,a.[Name],a.Describe,a.Amount,a.Price,a.IsEnabled,b.[Name] AS CategoryName,a.CreateTime,a.UpdateTime,a.Logo,a.Quantity ", req.PageIndex, req.PageSize, req.OrderBy,parameters: param.ToArray());
 

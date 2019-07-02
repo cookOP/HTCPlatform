@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -8,19 +9,20 @@ namespace HTCPlatform.ViewModel.Models.Product
     
     public class AddProductViewModel
     {
-        //[Required]
+        [Required]
         public string Name { get; set; }
-        //[Required]
+        [Required]
         public string Describe { get; set; }
-        //[Required]
+        [Required]
         public int Amount { get; set; }
-        //[Required]
+        [Required]
         public decimal Price { get; set; }
-        //[Required]
+        [Required]
+        [DefaultValue(typeof(string),"19401638097022976")]
         public long CategoryId { get; set; }
-        //[Required]
+        [Required]
         public string Logo { get; set; }
-        //[Required]
+        [Required]
         public int Quantity { get; set; }
         public bool IsEnabled { get; set; }
     }
